@@ -10,7 +10,7 @@ export const MachineIllustration = ({
   return (
     <div
       aria-hidden="true"
-      className={`relative isolate mx-auto w-[min(420px,80vw)] overflow-visible ${animationClass}`}
+      className={`relative isolate mx-auto w-[min(460px,78vw)] overflow-visible sm:w-[min(500px,70vw)] xl:w-[min(520px,36vw)] ${animationClass}`}
     >
       <svg
         viewBox="0 0 360 720"
@@ -147,7 +147,8 @@ export const MachineIllustration = ({
         />
       </svg>
 
-      <div className="pointer-events-none absolute -right-[40%] top-[20%] h-56 w-[120%] translate-x-1/4 rounded-[48px] bg-[radial-gradient(circle_at_center,rgba(139,191,142,0.25),transparent_65%)] blur-3xl" />
+      <div className="pointer-events-none absolute -right-[38%] top-[18%] h-[320px] w-[140%] -translate-y-8 rotate-[8deg] rounded-[56px] bg-[radial-gradient(circle_at_center,rgba(139,191,142,0.26),transparent_68%)] blur-[100px]" />
+      <div className="pointer-events-none absolute -left-[25%] bottom-[-12%] h-[180px] w-[120%] rounded-[48px] bg-[radial-gradient(circle_at_center,rgba(140,90,0,0.16),transparent_70%)] blur-[90px]" />
     </div>
   );
 };

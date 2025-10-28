@@ -10,7 +10,8 @@
   --color-background: #f8f7f5;
   --color-surface: #ffffff;
   --color-primary: #5c7f64;
-  --color-accent: #d4a017;
+  --color-primary-strong: #3e5b46;
+  --color-accent: #8c5a00;
   --color-error: #c3423f;
   --color-text-primary: #212121;
   --color-text-secondary: #757575;
@@ -22,30 +23,35 @@
   --radius-md: 16px;
   --radius-lg: 32px;
   --shadow-soft: 0 24px 80px rgba(33, 33, 33, 0.08);
-  --shadow-button: 0 12px 24px rgba(92, 127, 100, 0.25);
+  --shadow-button: 0 12px 24px rgba(92, 127, 100, 0.2);
 
-  --drawer-width: 400px;
+  --drawer-width: clamp(320px, 28vw, 420px);
   --machine-breathe-scale: 1.015;
+  --layout-max-width: 1440px;
+  --layout-padding-mobile: clamp(20px, 4vw, 32px);
+  --layout-padding-desktop: clamp(64px, 6vw, 120px);
 }
 
 [data-theme="dark"] {
   --color-background: #121212;
   --color-surface: #1e1e1e;
   --color-primary: #a3c1a7;
-  --color-accent: #ffd86f;
+  --color-primary-strong: #6e8f75;
+  --color-accent: #ffd06f;
   --color-error: #ff8886;
   --color-text-primary: #e0e0e0;
   --color-text-secondary: #9e9e9e;
   --color-glass: rgba(255, 255, 255, 0.04);
-  --color-outline: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  --color-outline: color-mix(in srgb, var(--color-primary) 45%, transparent);
   --shadow-soft: 0 24px 80px rgba(12, 12, 12, 0.55);
-  --shadow-button: 0 12px 24px rgba(163, 193, 167, 0.25);
+  --shadow-button: 0 12px 24px rgba(163, 193, 167, 0.18);
 }
 
 @theme inline {
   --color-background: var(--color-background);
   --color-surface: var(--color-surface);
   --color-primary: var(--color-primary);
+  --color-primary-strong: var(--color-primary-strong);
   --color-accent: var(--color-accent);
   --color-error: var(--color-error);
   --color-text-primary: var(--color-text-primary);
@@ -72,6 +78,7 @@ body {
   background: var(--color-background);
   color: var(--color-text-primary);
   font-family: var(--font-inter);
+  letter-spacing: -0.01em;
   margin: 0;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -95,8 +102,8 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  outline: 3px solid var(--color-primary-strong);
+  outline-offset: 3px;
 }
 
 .glass-card {
@@ -140,7 +147,7 @@ button {
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -153,6 +160,9 @@ button {
     animation: none !important;
   }
   .fade-in {
+    animation: fade-in-reduced 220ms ease-out forwards !important;
+  }
+  .scroll-hint__icon {
     animation: none !important;
   }
 }
@@ -166,4 +176,78 @@ button {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+@keyframes fade-in-reduced {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-pulse {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.scroll-hint__icon {
+  animation: scroll-pulse 1.6s ease-in-out infinite;
+}
+
+.layout-shell {
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin-inline: auto;
+  padding-inline: var(--layout-padding-mobile);
+}
+
+@media (min-width: 768px) {
+  .layout-shell {
+    padding-inline: clamp(32px, 6vw, 80px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .layout-shell {
+    padding-inline: var(--layout-padding-desktop);
+  }
+}
+
+@supports (padding: max(env(safe-area-inset-left), 1px)) {
+  .layout-shell {
+    padding-left: max(var(--layout-padding-mobile), env(safe-area-inset-left));
+    padding-right: max(
+      var(--layout-padding-mobile),
+      env(safe-area-inset-right)
+    );
+  }
+  @media (min-width: 768px) {
+    .layout-shell {
+      padding-left: max(clamp(32px, 6vw, 80px), env(safe-area-inset-left));
+      padding-right: max(clamp(32px, 6vw, 80px), env(safe-area-inset-right));
+    }
+  }
+  @media (min-width: 1200px) {
+    .layout-shell {
+      padding-left: max(
+        var(--layout-padding-desktop),
+        env(safe-area-inset-left)
+      );
+      padding-right: max(
+        var(--layout-padding-desktop),
+        env(safe-area-inset-right)
+      );
+    }
+  }
+}
+
+.safe-area-b {
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
 }

@@ -106,8 +106,11 @@ export default function Page() {
   return (
     <TelemetryProvider>
       <TopNav onOpenDrawer={handleOpenDrawer} />
-      <main className="relative flex min-h-screen flex-col items-center overflow-x-hidden bg-color-background text-color-text-primary">
-        <div className="flex w-full flex-col items-center px-6 pb-32 pt-[64px] sm:px-12 lg:px-20">
+      <main
+        className="relative flex min-h-screen flex-col items-center overflow-x-hidden bg-color-background pt-24 text-color-text-primary sm:pt-28 lg:pt-36"
+        style={{ paddingTop: "calc(6.5rem + env(safe-area-inset-top, 0px))" }}
+      >
+        <div className="flex w-full flex-col items-center pb-32 sm:pb-36">
           <Hero
             onOpenDrawer={handleOpenDrawer}
             reducedMotion={reducedMotion}
@@ -116,18 +119,18 @@ export default function Page() {
             onboardingActive={!dismissed}
           />
 
-          <section className="mt-16 grid w-full max-w-[min(1320px,92vw)] gap-6 text-sm text-color-text-secondary lg:grid-cols-[1.6fr_1fr]">
-            <article className="rounded-3xl border border-color-outline/40 bg-color-surface/80 p-6 leading-relaxed shadow-soft">
+          <section className="layout-shell mt-16 grid gap-8 text-sm text-color-text-secondary lg:grid-cols-[minmax(420px,1.1fr)_minmax(280px,0.8fr)] lg:gap-12">
+            <article className="rounded-[32px] border border-color-outline/45 bg-color-surface/85 p-8 leading-relaxed shadow-soft sm:p-10">
               <h2 className="text-lg font-medium text-color-text-primary">
                 Calm mission
               </h2>
-              <p className="mt-3">
+              <p className="mt-4 text-[1.06rem] leading-[1.7]">
                 Give every visitor a 30-second hit of digital tranquility while
                 hiding doctoral-level economics under a single tap. Hover or
                 focus any element to surface the full factory.
               </p>
             </article>
-            <div className="space-y-4">
+            <div className="flex flex-col gap-4">
               {telemetry.offline && (
                 <StatusBanner message="You're offline; data will refresh when connection returns." />
               )}
@@ -137,9 +140,7 @@ export default function Page() {
                   message="Telemetry link lost. Try again shortly."
                 />
               )}
-              <div className="hidden lg:block">
-                <ThemeSwitch location="footer" />
-              </div>
+              <ThemeSwitch location="footer" />
             </div>
           </section>
         </div>

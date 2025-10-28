@@ -1,35 +1,43 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 const STORAGE_KEY = "zen-machine-onboarding-dismissed";
+const LOCAL_EVENT = "zen-machine:onboarding-toggle";
 
 const readStoredPreference = () => {
   if (typeof window === "undefined") {
-    return false;
+    return true;
   }
   return window.localStorage.getItem(STORAGE_KEY) === "true";
 };
 
-export const useOnboarding = () => {
-  const [dismissed, setDismissed] = useState<boolean>(readStoredPreference);
+const subscribe = (callback: () => void) => {
+  if (typeof window === "undefined") {
+    return () => undefined;
+  }
 
-  useEffect(() => {
+  const handler = () => callback();
+  window.addEventListener("storage", handler);
+  window.addEventListener(LOCAL_EVENT, handler);
+
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(LOCAL_EVENT, handler);
+  };
+};
+
+export const useOnboarding = () => {
+  const dismissed = useSyncExternalStore(
+    subscribe,
+    readStoredPreference,
+    () => true,
+  );
+
+  const dismiss = () => {
     if (typeof window === "undefined") {
       return;
     }
-    const handleStorage = (event: StorageEvent) => {
-      if (event.key === STORAGE_KEY) {
-        setDismissed(event.newValue === "true");
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
-
-  const dismiss = () => {
-    setDismissed(true);
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(STORAGE_KEY, "true");
-    }
+    window.localStorage.setItem(STORAGE_KEY, "true");
+    window.dispatchEvent(new Event(LOCAL_EVENT));
   };
 
   return {

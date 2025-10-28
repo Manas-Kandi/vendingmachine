@@ -155,13 +155,13 @@ export const OpenMindDrawer = ({ open, onClose }: OpenMindDrawerProps) => {
     <div
       aria-hidden={!open}
       className={clsx(
-        "pointer-events-none fixed inset-0 z-50 flex lg:justify-end",
-        open && "pointer-events-auto",
+        "pointer-events-none fixed inset-0 z-50 flex bg-black/10 backdrop-blur-sm transition-colors duration-200 lg:justify-end",
+        open && "pointer-events-auto bg-black/20",
       )}
     >
       <div
         className={clsx(
-          "absolute inset-0 bg-black/30 transition-opacity duration-200",
+          "absolute inset-0 transition-opacity duration-200",
           open ? "opacity-100" : "opacity-0",
         )}
         aria-hidden="true"
@@ -173,7 +173,7 @@ export const OpenMindDrawer = ({ open, onClose }: OpenMindDrawerProps) => {
         aria-modal="true"
         aria-labelledby={`${drawerId}-title`}
         className={clsx(
-          "relative ml-auto flex h-[90vh] w-full max-w-full flex-col gap-6 rounded-t-3xl border border-color-outline/50 bg-color-surface p-6 shadow-soft transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] sm:h-[86vh] lg:h-full lg:max-w-[var(--drawer-width)] lg:rounded-none lg:border-l lg:pt-12",
+          "relative ml-auto flex h-[92vh] w-full max-w-full flex-col gap-6 rounded-t-[36px] border border-color-outline/45 bg-color-surface px-6 pb-8 pt-8 shadow-[0_32px_80px_rgba(17,17,17,0.28)] transition-transform duration-280 ease-[cubic-bezier(0.32,0,0.2,1)] will-change-transform sm:h-[86vh] sm:px-8 sm:pt-10 lg:h-full lg:max-w-[var(--drawer-width)] lg:rounded-none lg:border-l lg:px-10 lg:pb-10 lg:pt-14",
           open
             ? "translate-y-0 lg:translate-x-0"
             : "translate-y-full lg:translate-x-full",
@@ -193,7 +193,7 @@ export const OpenMindDrawer = ({ open, onClose }: OpenMindDrawerProps) => {
             </h2>
           </div>
           <button
-            className="rounded-full border border-transparent bg-color-background/80 p-3 text-color-text-secondary transition-colors hover:text-color-text-primary"
+            className="rounded-full border border-color-outline/40 bg-color-background/80 p-3 text-color-text-secondary transition-colors hover:border-color-primary hover:text-color-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-color-primary-strong"
             onClick={onClose}
           >
             <span className="sr-only">Close drawer</span>
@@ -227,10 +227,10 @@ export const OpenMindDrawer = ({ open, onClose }: OpenMindDrawerProps) => {
           <a
             href={`data:text/csv;charset=utf-8,${encodeURIComponent(csvContent)}`}
             download="zen-machine-timeline.csv"
-            className="sr-only focus-visible:not-sr-only focus-visible:inline-flex focus-visible:items-center focus-visible:gap-2 focus-visible:rounded-full focus-visible:border focus-visible:border-color-outline/60 focus-visible:bg-color-surface/80 focus-visible:px-3 focus-visible:py-1 focus-visible:text-color-text-secondary"
+            className="inline-flex items-center gap-2 rounded-full border border-color-outline/50 bg-color-surface/80 px-3 py-1 text-color-text-secondary transition-colors hover:border-color-primary hover:text-color-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-color-primary-strong"
           >
             <DownloadSimple size={16} />
-            Download CSV
+            CSV
           </a>
         </div>
 

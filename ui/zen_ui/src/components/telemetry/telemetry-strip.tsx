@@ -28,15 +28,18 @@ export const TelemetryStrip = memo(() => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const metrics = useStore(telemetryStore).metrics;
   const isVisible = useIntersectionObserver(containerRef, {
-    threshold: 0.5,
+    threshold: 0.18,
   });
 
   return (
     <section
+      role="region"
+      aria-roledescription="Live telemetry strip"
       aria-live="polite"
       aria-label="Live telemetry"
       ref={containerRef}
-      className="fixed bottom-6 left-1/2 z-40 w-[min(92vw,720px)] -translate-x-1/2 rounded-full border border-color-outline bg-color-surface/90 px-5 py-4 backdrop-blur-lg shadow-soft transition-all duration-200 lg:bottom-8 lg:h-16 lg:w-[min(80vw,960px)] lg:rounded-3xl lg:px-6 lg:py-0"
+      className="safe-area-b fixed left-1/2 z-40 w-[min(92vw,760px)] -translate-x-1/2 rounded-full border border-color-outline/50 bg-color-surface/95 px-5 py-4 backdrop-blur-lg shadow-soft transition-all duration-200 md:px-6 lg:w-[min(78vw,1000px)] lg:rounded-[42px]"
+      style={{ bottom: "max(24px, calc(env(safe-area-inset-bottom, 0px) + 16px))" }}
     >
       <div className="flex items-center justify-between gap-3 lg:h-full">
         {metrics.map((metric) => (
@@ -121,15 +124,15 @@ const MetricPill = ({ metric, animate }: MetricPillProps) => {
   const sign = metric.delta > 0 ? "+" : "";
 
   return (
-    <div className="flex flex-1 items-center justify-center gap-3 rounded-full bg-color-surface/70 px-3 py-2 text-sm text-color-text-secondary">
-      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-color-primary/10 text-color-primary">
+    <div className="flex min-h-[52px] flex-1 items-center justify-center gap-3 rounded-full bg-color-surface/75 px-3 py-2 text-sm text-color-text-secondary shadow-[0_10px_24px_rgba(33,33,33,0.08)]">
+      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-color-primary/12 text-color-primary-strong">
         <Icon size={22} weight="regular" />
       </span>
       <div className="flex flex-col">
-        <span className="text-xs uppercase tracking-[0.2em]">
+        <span className="text-[0.7rem] uppercase tracking-[0.34em] text-color-text-secondary">
           {metric.label}
         </span>
-        <span className="text-base font-medium text-color-text-primary">
+        <span className="text-lg font-semibold text-color-text-primary">
           {formattedValue}
           <span className="ml-1 text-sm text-color-text-secondary">
             {metric.unit}

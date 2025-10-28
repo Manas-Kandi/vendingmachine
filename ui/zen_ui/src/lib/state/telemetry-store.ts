@@ -100,7 +100,7 @@ const loadTelemetry = async () => {
   } catch (error) {
     telemetryStore.update((current) => ({
       ...current,
-      loading: false,
+      loading: current.marginSeries.length === 0,
       error:
         error instanceof Error
           ? error.message

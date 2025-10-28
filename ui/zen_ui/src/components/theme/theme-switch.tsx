@@ -23,15 +23,15 @@ export const ThemeSwitch = ({ location = "footer" }: ThemeSwitchProps) => {
       type="button"
       onClick={toggleTheme}
       className={clsx(
-        "flex items-center gap-3 rounded-full border border-color-outline/60 bg-color-surface/70 px-4 py-2 text-sm text-color-text-secondary shadow-soft transition-colors duration-200",
-        "hover:text-color-text-primary",
+        "flex min-h-[52px] items-center gap-3 rounded-full border border-color-outline/60 bg-color-surface/80 px-5 text-sm text-color-text-secondary shadow-soft transition-all duration-200",
+        "hover:border-color-primary hover:text-color-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-color-primary-strong",
         location === "drawer"
           ? "w-full justify-between"
           : "justify-center",
       )}
       aria-label={label}
     >
-      <span className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-color-background/80">
+      <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-color-background/80">
         <Sun
           size={20}
           weight="duotone"

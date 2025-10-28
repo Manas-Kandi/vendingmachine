@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useMemo } from "react";
 import clsx from "clsx";
 import { buildLinePath } from "@/lib/utils/chart";
 
@@ -23,6 +23,20 @@ export const Sparkline = ({
   loading = false,
 }: SparklineProps) => {
   const gradientId = useId();
+  const backgroundId = useId();
+  const captionId = useId();
+
+  const stats = useMemo(() => {
+    if (!values.length) {
+      return null;
+    }
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const first = values[0];
+    const last = values[values.length - 1];
+    const direction = last > first ? "rising" : last < first ? "softening" : "steady";
+    return { min, max, first, last, direction };
+  }, [values]);
 
   if (loading) {
     return (
@@ -34,9 +48,10 @@ export const Sparkline = ({
 
   return (
     <figure
-      className="group relative w-full rounded-3xl border border-color-outline/40 bg-color-surface/60 p-4"
+      className="group relative w-full rounded-3xl border border-color-outline/45 bg-color-surface/70 p-5 shadow-[0_18px_42px_rgba(33,33,33,0.08)]"
       role="img"
       aria-label={title}
+      aria-describedby={stats ? captionId : undefined}
     >
       <svg
         viewBox={`0 0 ${width} ${height}`}
@@ -56,20 +71,49 @@ export const Sparkline = ({
             <stop offset="0%" stopColor="rgba(92,127,100,0.65)" />
             <stop offset="100%" stopColor="rgba(92,127,100,0.1)" />
           </linearGradient>
+          <linearGradient id={backgroundId} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(92,127,100,0.05)" />
+            <stop offset="100%" stopColor="rgba(92,127,100,0.15)" />
+          </linearGradient>
         </defs>
         {path ? (
           <>
+            <rect
+              x="0"
+              y="0"
+              width={width}
+              height={height}
+              fill={`url(#${backgroundId})`}
+            />
+            <line
+              x1="0"
+              y1={height - 1}
+              x2={width}
+              y2={height - 1}
+              stroke="rgba(117,117,117,0.25)"
+              strokeWidth={1}
+            />
             <path
               d={path}
               fill="none"
               stroke={`url(#${gradientId})`}
-              strokeWidth={1.6}
+              strokeWidth={2}
               strokeLinecap="round"
             />
             <path
               d={`${path} L ${width} ${height} L 0 ${height} Z`}
-              className="fill-color-primary/15"
+              className="fill-color-primary/12"
             />
+            {stats && (
+              <circle
+                cx={width}
+                cy={height - ((values[values.length - 1] - stats.min) / (stats.max - stats.min || 1)) * height}
+                r={4.5}
+                fill="var(--color-primary)"
+                stroke="var(--color-surface)"
+                strokeWidth={1.6}
+              />
+            )}
           </>
         ) : (
           <text
@@ -83,8 +127,15 @@ export const Sparkline = ({
           </text>
         )}
       </svg>
-      <figcaption className="mt-2 text-xs uppercase tracking-[0.2em] text-color-text-secondary">
-        Last 24 hours
+      <figcaption
+        id={captionId}
+        className="mt-3 text-xs uppercase tracking-[0.28em] text-color-text-secondary"
+      >
+        {stats
+          ? `Last 24h · Low ${stats.min.toFixed(1)} · High ${stats.max.toFixed(
+              1,
+            )} · ${stats.direction}`
+          : "Awaiting signal"}
       </figcaption>
     </figure>
   );
