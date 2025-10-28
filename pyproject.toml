@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zen-machine"
+version = "0.1.0"
+description = "Autonomous AI vending-supplier micro-economy with meditative UX"
+authors = [{name = "Zen Machine Team", email = "team@zenmachine.ai"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "redis>=5.0.0",
+    "asyncpg>=0.29.0",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.12.0",
+    "pydantic>=2.4.0",
+    "numpy>=1.24.0",
+    "pandas>=2.1.0",
+    "scipy>=1.11.0",
+    "cvxpy>=1.4.0",
+    "llama-cpp-python>=0.2.0",
+    "transformers>=4.35.0",
+    "torch>=2.1.0",
+    "datasets>=2.14.0",
+    "peft>=0.6.0",
+    "cryptography>=41.0.0",
+    "python-multipart>=0.0.6",
+    "websockets>=12.0",
+    "httpx>=0.25.0",
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "hypothesis>=6.88.0",
+    "factory-boy>=3.3.0",
+    "faker>=20.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.7.0",
+    "pre-commit>=3.5.0",
+    "watchfiles>=0.21.0",
+]
+ui = [
+    "streamlit>=1.28.0",
+    "plotly>=5.17.0",
+    "dash>=2.14.0",
+]
+
+[project.scripts]
+zen-machine = "zen_machine.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["zen_machine*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

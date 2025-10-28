@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zen-machine
+  labels:
+    name: zen-machine
+    app.kubernetes.io/name: zen-machine
+    app.kubernetes.io/version: "0.1.0"

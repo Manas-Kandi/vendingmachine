@@ -1,0 +1,2 @@
+[console_scripts]
+zen-machine = zen_machine.cli:main

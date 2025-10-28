@@ -1,0 +1,430 @@
+/* Zen Machine - Japanese Minimalist Styles */
+
+:root {
+    /* Japanese color palette */
+    --zen-bg: #F5F5F5;
+    --zen-text: #2C2C2C;
+    --zen-accent: #8B4513;
+    --zen-highlight: #D4AF37;
+    --zen-shadow: rgba(0, 0, 0, 0.1);
+    --zen-glow: rgba(212, 175, 55, 0.3);
+    
+    /* Spacing based on Japanese "Ma" concept */
+    --ma-xs: 0.25rem;
+    --ma-sm: 0.5rem;
+    --ma-md: 1rem;
+    --ma-lg: 2rem;
+    --ma-xl: 4rem;
+    
+    /* Typography */
+    --font-primary: 'Noto Sans JP', 'Inter', sans-serif;
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--zen-bg);
+    color: var(--zen-text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    font-weight: var(--font-weight-light);
+}
+
+.zen-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--ma-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+.zen-header {
+    text-align: center;
+    margin-bottom: var(--ma-xl);
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+.zen-title {
+    font-size: 2.5rem;
+    font-weight: var(--font-weight-light);
+    letter-spacing: 0.1em;
+    margin-bottom: var(--ma-sm);
+    color: var(--zen-text);
+}
+
+.zen-subtitle {
+    font-size: 1.1rem;
+    color: var(--zen-accent);
+    font-weight: var(--font-weight-light);
+    opacity: 0.8;
+}
+
+/* Main Content */
+.zen-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.vending-machine-container {
+    position: relative;
+    perspective: 1000px;
+}
+
+.vending-machine {
+    width: 400px;
+    height: 600px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+.machine-body {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 40px var(--zen-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+.machine-front {
+    width: 100%;
+    height: 100%;
+    padding: var(--ma-lg);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Display Window */
+.display-window {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: var(--ma-md);
+    margin-bottom: var(--ma-md);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--ma-sm);
+    height: 100%;
+    align-items: center;
+}
+
+.product-item {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    padding: var(--ma-sm);
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.product-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--zen-shadow);
+}
+
+.product-name {
+    font-size: 0.8rem;
+    color: var(--zen-text);
+    margin-bottom: var(--ma-xs);
+}
+
+.product-price {
+    font-size: 0.9rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--zen-accent);
+}
+
+.product-stock {
+    font-size: 0.7rem;
+    color: var(--zen-text);
+    opacity: 0.7;
+}
+
+/* Control Panel */
+.control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--ma-md);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.status-indicator {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--zen-highlight), var(--zen-accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.breathing-glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--zen-glow);
+    animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+}
+
+.margin-display {
+    text-align: right;
+}
+
+.margin-value {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--zen-accent);
+}
+
+/* Ambient Lighting */
+.ambient-light {
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    right: -50px;
+    bottom: -50px;
+    background: radial-gradient(circle, var(--zen-glow), transparent 70%);
+    z-index: -1;
+    animation: ambientPulse 6s ease-in-out infinite;
+}
+
+@keyframes ambientPulse {
+    0%, 100% {
+        opacity: 0.1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* Reasoning Panel */
+.reasoning-panel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100vh;
+    background: rgba(245, 245, 245, 0.95);
+    backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding: var(--ma-lg);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.reasoning-panel.open {
+    right: 0;
+}
+
+.close-panel {
+    position: absolute;
+    top: var(--ma-md);
+    right: var(--ma-md);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--zen-text);
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.close-panel:hover {
+    opacity: 1;
+}
+
+.reasoning-panel h3 {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-normal);
+    margin-bottom: var(--ma-lg);
+    color: var(--zen-accent);
+}
+
+.reasoning-content {
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.reasoning-section {
+    margin-bottom: var(--ma-lg);
+    padding: var(--ma-md);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    border-left: 3px solid var(--zen-highlight);
+}
+
+.reasoning-section h4 {
+    font-size: 1.1rem;
+    margin-bottom: var(--ma-sm);
+    color: var(--zen-text);
+}
+
+/* Footer */
+.zen-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--ma-xl);
+    padding: var(--ma-md);
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.open-mind-btn {
+    background: var(--zen-accent);
+    color: white;
+    border: none;
+    padding: var(--ma-md) var(--ma-lg);
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: var(--font-weight-normal);
+}
+
+.open-mind-btn:hover {
+    background: var(--zen-highlight);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--zen-shadow);
+}
+
+.real-time-stats {
+    display: flex;
+    gap: var(--ma-lg);
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--zen-text);
+    opacity: 0.7;
+    margin-bottom: var(--ma-xs);
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--zen-accent);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .zen-container {
+        padding: var(--ma-md);
+    }
+    
+    .vending-machine {
+        width: 300px;
+        height: 450px;
+    }
+    
+    .zen-title {
+        font-size: 2rem;
+    }
+    
+    .reasoning-panel {
+        width: 100%;
+        right: -100%;
+    }
+    
+    .real-time-stats {
+        flex-direction: column;
+        gap: var(--ma-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .control-panel {
+        flex-direction: column;
+        gap: var(--ma-md);
+    }
+    
+    .zen-footer {
+        flex-direction: column;
+        gap: var(--ma-md);
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .breathing-glow,
+    .ambient-light {
+        animation: none;
+    }
+    
+    .vending-machine {
+        transition: none;
+    }
+}
+
+/* Focus styles */
+.open-mind-btn:focus,
+.close-panel:focus {
+    outline: 2px solid var(--zen-highlight);
+    outline-offset: 2px;
+}

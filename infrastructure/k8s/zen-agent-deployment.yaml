@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zen-agent
+  namespace: zen-machine
+  labels:
+    app: zen-agent
+    component: agent
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zen-agent
+  template:
+    metadata:
+      labels:
+        app: zen-agent
+        component: agent
+    spec:
+      containers:
+      - name: zen-agent
+        image: zen-machine:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: zen-secrets
+              key: database-url
+        - name: REDIS_URL
+          value: redis://redis-service:6379/0
+        - name: MODEL_PATH
+          value: /app/models/mistral-7b-instruct-v0.3.Q4_K_M.gguf
+        - name: PORT
+          value: "8000"
+        - name: LOG_LEVEL
+          value: INFO
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        volumeMounts:
+        - name: models-volume
+          mountPath: /app/models
+          readOnly: true
+        - name: data-volume
+          mountPath: /app/data
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: models-volume
+        persistentVolumeClaim:
+          claimName: models-pvc
+      - name: data-volume
+        emptyDir: {}
+      initContainers:
+      - name: model-downloader
+        image: alpine:latest
+        command:
+        - sh
+        - -c
+        - |
+          apk add --no-cache curl
+          mkdir -p /shared/models
+          # Download model (placeholder - use init container in production)
+          echo "Model download placeholder"
+        volumeMounts:
+        - name: models-volume
+          mountPath: /shared/models
+      nodeSelector:
+        kubernetes.io/arch: amd64
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zen-agent-service
+  namespace: zen-machine
+  labels:
+    app: zen-agent
+spec:
+  selector:
+    app: zen-agent
+  ports:
+  - port: 80
+    targetPort: 8000
+    name: http
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: zen-agent-hpa
+  namespace: zen-machine
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: zen-agent
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

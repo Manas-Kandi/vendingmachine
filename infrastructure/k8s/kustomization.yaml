@@ -1,0 +1,49 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: zen-machine
+
+resources:
+  - namespace.yaml
+  - secrets.yaml
+  - postgres-deployment.yaml
+  - redis-deployment.yaml
+  - zen-agent-deployment.yaml
+  - store-agent-deployment.yaml
+  - adversary-deployment.yaml
+  - ui-services.yaml
+  - ingress.yaml
+
+commonLabels:
+  app.kubernetes.io/name: zen-machine
+  app.kubernetes.io/version: "0.1.0"
+
+images:
+  - name: zen-machine
+    newTag: latest
+
+configMapGenerator:
+  - name: zen-config
+    literals:
+      - log-level=INFO
+      - metrics-port=9090
+      - health-check-interval=30
+      - adversary-budget=0.25
+      - max-latency-ms=200
+      - margin-target=0.18
+      - spoilage-limit=0.008
+
+patchesStrategicMerge:
+  - |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: zen-agent
+    spec:
+      template:
+        spec:
+          containers:
+          - name: zen-agent
+            env:
+            - name: ENVIRONMENT
+              value: production

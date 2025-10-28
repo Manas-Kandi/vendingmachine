@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Mind - Supply Chain Intelligence</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="store-container">
+        <!-- Header -->
+        <header class="store-header">
+            <h1>Store Mind</h1>
+            <div class="reputation-badge">
+                <span class="reputation-score">4.5</span>
+                <span class="reputation-label">/ 5.0</span>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="store-main">
+            <!-- Warehouse Grid -->
+            <section class="warehouse-section">
+                <h2>Warehouse Overview</h2>
+                <div class="warehouse-grid" id="warehouse-grid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Entropy Gauges -->
+            <section class="entropy-section">
+                <h2>System Entropy</h2>
+                <div class="entropy-gauges">
+                    <div class="gauge-container">
+                        <canvas id="demand-entropy" width="200" height="200"></canvas>
+                        <label>Demand Chaos</label>
+                    </div>
+                    <div class="gauge-container">
+                        <canvas id="supply-entropy" width="200" height="200"></canvas>
+                        <label>Supply Chaos</label>
+                    </div>
+                    <div class="gauge-container">
+                        <canvas id="adversary-entropy" width="200" height="200"></canvas>
+                        <label>Adversary Impact</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Real-time Orders -->
+            <section class="orders-section">
+                <h2>Live Orders</h2>
+                <div class="orders-list" id="orders-list">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Cost Analysis -->
+            <section class="cost-section">
+                <h2>Cost Breakdown</h2>
+                <div class="cost-chart" id="cost-chart">
+                    <!-- Chart will be rendered here -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Sidebar with Details -->
+        <aside class="store-sidebar">
+            <div class="sidebar-section">
+                <h3>Market Conditions</h3>
+                <div class="market-data">
+                    <div class="data-item">
+                        <span class="label">Diesel Price</span>
+                        <span class="value" id="diesel-price">€1.45/L</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label">Temperature</span>
+                        <span class="value" id="temperature">22.3°C</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label">Lead Time Base</span>
+                        <span class="value" id="lead-time">2.1 days</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Recent Activity</h3>
+                <div class="activity-feed" id="activity-feed">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="store-ui.js"></script>
+</body>
+</html>

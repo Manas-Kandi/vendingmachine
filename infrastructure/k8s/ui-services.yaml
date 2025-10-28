@@ -1,0 +1,142 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zen-ui
+  namespace: zen-machine
+  labels:
+    app: zen-ui
+    component: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zen-ui
+  template:
+    metadata:
+      labels:
+        app: zen-ui
+        component: frontend
+    spec:
+      containers:
+      - name: zen-ui
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: zen-ui-content
+          mountPath: /usr/share/nginx/html
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+      volumes:
+      - name: zen-ui-content
+        configMap:
+          name: zen-ui-content
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zen-ui-service
+  namespace: zen-machine
+  labels:
+    app: zen-ui
+spec:
+  selector:
+    app: zen-ui
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-ui
+  namespace: zen-machine
+  labels:
+    app: store-ui
+    component: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: store-ui
+  template:
+    metadata:
+      labels:
+        app: store-ui
+        component: frontend
+    spec:
+      containers:
+      - name: store-ui
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: store-ui-content
+          mountPath: /usr/share/nginx/html
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+      volumes:
+      - name: store-ui-content
+        configMap:
+          name: store-ui-content
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: store-ui-service
+  namespace: zen-machine
+  labels:
+    app: store-ui
+spec:
+  selector:
+    app: store-ui
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zen-ui-content
+  namespace: zen-machine
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Zen Machine - Redirect</title>
+        <meta http-equiv="refresh" content="0; url=/ui/zen/">
+    </head>
+    <body>
+        <p>Redirecting to Zen Machine UI...</p>
+    </body>
+    </html>
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: store-ui-content
+  namespace: zen-machine
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Store Mind - Redirect</title>
+        <meta http-equiv="refresh" content="0; url=/ui/store/">
+    </head>
+    <body>
+        <p>Redirecting to Store Mind UI...</p>
+    </body>
+    </html>

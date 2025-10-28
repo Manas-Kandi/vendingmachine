@@ -1,0 +1,389 @@
+/* Store Mind UI - Dark Indigo Theme */
+
+:root {
+    /* Dark indigo color palette */
+    --store-bg: #0a0a23;
+    --store-surface: #1a1a3a;
+    --store-surface-light: #2a2a4a;
+    --store-text: #e6e6fa;
+    --store-text-muted: #8b8ba7;
+    --store-accent: #6366f1;
+    --store-accent-light: #818cf8;
+    --store-success: #10b981;
+    --store-warning: #f59e0b;
+    --store-error: #ef4444;
+    
+    /* Shadows and glows */
+    --store-glow: rgba(99, 102, 241, 0.3);
+    --store-shadow: rgba(0, 0, 0, 0.5);
+    
+    /* Typography */
+    --font-primary: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background: var(--store-bg);
+    color: var(--store-text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.store-container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-template-rows: auto 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header */
+.store-header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--store-surface);
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px var(--store-shadow);
+}
+
+.store-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--store-accent), var(--store-accent-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.reputation-badge {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem;
+    background: var(--store-surface-light);
+    border-radius: 0.5rem;
+    border: 1px solid var(--store-accent);
+}
+
+.reputation-score {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--store-success);
+}
+
+.reputation-label {
+    font-size: 0.9rem;
+    color: var(--store-text-muted);
+}
+
+/* Main Content */
+.store-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 1.5rem;
+    align-content: start;
+}
+
+.store-main > section {
+    background: var(--store-surface);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px var(--store-shadow);
+    border: 1px solid var(--store-surface-light);
+}
+
+.store-main h2 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: var(--store-accent-light);
+}
+
+/* Warehouse Grid */
+.warehouse-section {
+    grid-column: 1 / -1;
+}
+
+.warehouse-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.warehouse-box {
+    background: var(--store-surface-light);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--store-accent);
+    transition: all 0.3s ease;
+}
+
+.warehouse-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--store-glow);
+}
+
+.warehouse-box h4 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--store-text);
+}
+
+.warehouse-box .quantity {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--store-accent-light);
+}
+
+.warehouse-box .status {
+    font-size: 0.8rem;
+    color: var(--store-text-muted);
+    margin-top: 0.25rem;
+}
+
+/* Entropy Gauges */
+.entropy-section {
+    grid-column: 1 / -1;
+}
+
+.entropy-gauges {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.gauge-container {
+    text-align: center;
+    flex: 1;
+    min-width: 150px;
+}
+
+.gauge-container label {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--store-text-muted);
+}
+
+/* Orders Section */
+.orders-section {
+    grid-column: 1;
+}
+
+.orders-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: var(--store-surface-light);
+    border-radius: 0.5rem;
+    border-left: 3px solid var(--store-accent);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.order-details {
+    flex: 1;
+}
+
+.order-sku {
+    font-weight: 500;
+    color: var(--store-text);
+}
+
+.order-qty {
+    font-size: 0.9rem;
+    color: var(--store-text-muted);
+}
+
+.order-price {
+    font-weight: 600;
+    color: var(--store-accent-light);
+}
+
+/* Cost Section */
+.cost-section {
+    grid-column: 2;
+}
+
+.cost-chart {
+    height: 300px;
+    position: relative;
+}
+
+/* Sidebar */
+.store-sidebar {
+    background: var(--store-surface);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px var(--store-shadow);
+    border: 1px solid var(--store-surface-light);
+}
+
+.sidebar-section {
+    margin-bottom: 2rem;
+}
+
+.sidebar-section h3 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: var(--store-accent-light);
+}
+
+.market-data {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.data-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: var(--store-surface-light);
+    border-radius: 0.5rem;
+}
+
+.data-item .label {
+    font-size: 0.9rem;
+    color: var(--store-text-muted);
+}
+
+.data-item .value {
+    font-weight: 500;
+    color: var(--store-text);
+}
+
+.activity-feed {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: var(--store-surface-light);
+    border-radius: 0.5rem;
+    border-left: 3px solid var(--store-accent);
+    font-size: 0.9rem;
+}
+
+.activity-time {
+    font-size: 0.8rem;
+    color: var(--store-text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.activity-text {
+    color: var(--store-text);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--store-surface);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--store-accent);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--store-accent-light);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .store-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+    
+    .store-sidebar {
+        grid-row: 3;
+    }
+    
+    .store-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .orders-section,
+    .cost-section {
+        grid-column: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .store-container {
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .entropy-gauges {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .warehouse-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .store-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .order-item {
+        animation: none;
+    }
+}
+
+/* Focus styles */
+*:focus {
+    outline: 2px solid var(--store-accent-light);
+    outline-offset: 2px;
+}
