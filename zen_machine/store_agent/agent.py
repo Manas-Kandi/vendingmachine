@@ -20,10 +20,6 @@ logger = logging.getLogger(__name__)
 class StoreAgentConfig:
     """Configuration for Store Agent."""
     
-    model_path: str = "phi-3-mini-4k-instruct-q4.gguf"
-    context_length: int = 4096
-    temperature: float = 0.2
-    max_tokens: int = 256
     margin_target: float = 0.12
     urgency_premium: float = 0.08
     max_eta_exaggeration: float = 0.25  # 25% max ETA exaggeration
@@ -38,7 +34,7 @@ class StoreAgent:
         self.config = config
         self.cost_model = CostModel(config)
         self.lead_time_model = LeadTimeModel(config)
-        self.llm = StoreLLMInterface(config)
+        self.llm = StoreLLMInterface()
         self.reputation = 4.5  # Initial reputation
         self.order_history = []
         

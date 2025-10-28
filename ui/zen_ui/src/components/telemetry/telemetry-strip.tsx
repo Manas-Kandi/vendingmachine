@@ -33,6 +33,7 @@ export const TelemetryStrip = memo(() => {
 
   return (
     <section
+      id="telemetry"
       role="region"
       aria-roledescription="Live telemetry strip"
       aria-live="polite"

@@ -7,14 +7,14 @@
   --font-fira: "Fira Code", "SFMono-Regular", Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
 
-  --color-background: #f8f7f5;
+  --color-background: #f7f5f2;
   --color-surface: #ffffff;
-  --color-primary: #5c7f64;
-  --color-primary-strong: #3e5b46;
-  --color-accent: #8c5a00;
-  --color-error: #c3423f;
-  --color-text-primary: #212121;
-  --color-text-secondary: #757575;
+  --color-primary: #5a7d64;
+  --color-primary-strong: #3c5a46;
+  --color-accent: #8a5a00;
+  --color-error: #c1403e;
+  --color-text-primary: #1f1f1f;
+  --color-text-secondary: #737373;
   --color-glass: rgba(255, 255, 255, 0.08);
   --color-outline: color-mix(in srgb, var(--color-primary) 60%, transparent);
 
@@ -33,14 +33,14 @@
 }
 
 [data-theme="dark"] {
-  --color-background: #121212;
-  --color-surface: #1e1e1e;
-  --color-primary: #a3c1a7;
-  --color-primary-strong: #6e8f75;
-  --color-accent: #ffd06f;
-  --color-error: #ff8886;
-  --color-text-primary: #e0e0e0;
-  --color-text-secondary: #9e9e9e;
+  --color-background: #1a1a1a;
+  --color-surface: #2a2a2a;
+  --color-primary: #a8c6ad;
+  --color-primary-strong: #729479;
+  --color-accent: #ffcf70;
+  --color-error: #ff8a88;
+  --color-text-primary: #e8e8e8;
+  --color-text-secondary: #a2a2a2;
   --color-glass: rgba(255, 255, 255, 0.04);
   --color-outline: color-mix(in srgb, var(--color-primary) 45%, transparent);
   --shadow-soft: 0 24px 80px rgba(12, 12, 12, 0.55);
@@ -82,6 +82,12 @@ body {
   margin: 0;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+[data-theme="dark"] body {
+  background: var(--color-background);
 }
 
 ::selection {
@@ -207,6 +213,8 @@ button {
   margin-inline: auto;
   padding-inline: var(--layout-padding-mobile);
 }
+  
+/* hero-gradient class intentionally left blank for optional future use */
 
 @media (min-width: 768px) {
   .layout-shell {
@@ -250,4 +258,27 @@ button {
 
 .safe-area-b {
   padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+.calm-mission-card {
+  background: linear-gradient(135deg, var(--color-surface), color-mix(in srgb, var(--color-surface) 95%, var(--color-primary)));
+  transition: border-color 0.3s ease;
+}
+
+.calm-mission-card:hover {
+  border-color: var(--color-primary);
+}
+
+.hero-bg {
+  background-image: radial-gradient(circle at 50% 0, color-mix(in srgb, var(--color-primary) 20%, transparent) 0%, transparent 30%);
+  animation: hero-bg-animation 10s infinite alternate;
+}
+
+@keyframes hero-bg-animation {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 0% 100%;
+  }
 }

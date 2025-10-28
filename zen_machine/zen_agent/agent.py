@@ -17,7 +17,7 @@ from ..core.models import (
 )
 from .demand_model import DemandModel
 from .optimization_engine import OptimizationEngine
-from .llm_interface import LLMInterface
+from .llm_interface import ZenLLMInterface
 
 logger = logging.getLogger(__name__)
 
@@ -26,10 +26,6 @@ logger = logging.getLogger(__name__)
 class ZenAgentConfig:
     """Configuration for Zen Agent."""
     
-    model_path: str = "mistral-7b-instruct-v0.3.Q4_K_M.gguf"
-    context_length: int = 8192
-    temperature: float = 0.1
-    max_tokens: int = 512
     price_bounds: tuple = (0.95, 1.05)  # ±5% of MSRP
     max_order_qty: int = 99
     optimization_timeout: float = 0.1  # 100ms
@@ -43,7 +39,7 @@ class ZenAgent:
         self.config = config
         self.demand_model = DemandModel()
         self.optimizer = OptimizationEngine(config)
-        self.llm = LLMInterface(config)
+        self.llm = ZenLLMInterface()
         self.memory = []  # 7-day rolling memory
         
     async def make_decision(

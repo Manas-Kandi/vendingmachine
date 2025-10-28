@@ -155,8 +155,10 @@ export const OpenMindDrawer = ({ open, onClose }: OpenMindDrawerProps) => {
     <div
       aria-hidden={!open}
       className={clsx(
-        "pointer-events-none fixed inset-0 z-50 flex bg-black/10 backdrop-blur-sm transition-colors duration-200 lg:justify-end",
-        open && "pointer-events-auto bg-black/20",
+        "fixed inset-0 z-50 flex backdrop-blur-sm transition-all duration-300 lg:justify-end",
+        open
+          ? "pointer-events-auto visible bg-black/20 opacity-100"
+          : "pointer-events-none invisible bg-black/0 opacity-0",
       )}
     >
       <div
