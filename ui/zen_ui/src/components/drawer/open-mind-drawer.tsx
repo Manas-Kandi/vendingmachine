@@ -241,6 +241,67 @@ export const OpenMindDrawer = ({ open, onClose }: OpenMindDrawerProps) => {
           onBrushChange={() => undefined}
         />
 
+        <section className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-color-outline/40 bg-color-surface/70 p-4 text-sm">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.3em] text-color-text-secondary">
+              Inventory
+            </h3>
+            <ul className="mt-3 space-y-2">
+              {(telemetry.inventory.length ? telemetry.inventory : []).map((item) => (
+                <li key={item.sku} className="flex items-center justify-between text-color-text-primary">
+                  <span>{item.sku.toUpperCase()}</span>
+                  <span className="text-sm text-color-text-secondary">
+                    {item.stock} units · ${item.msrp.toFixed(2)}
+                  </span>
+                </li>
+              ))}
+              {!telemetry.inventory.length && (
+                <li className="text-xs text-color-text-secondary">
+                  Inventory snapshot pending live data.
+                </li>
+              )}
+            </ul>
+          </div>
+          <div className="rounded-2xl border border-color-outline/40 bg-color-surface/70 p-4 text-sm">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.3em] text-color-text-secondary">
+              Supplier action
+            </h3>
+            <ul className="mt-3 space-y-2">
+              {(telemetry.orders.length ? telemetry.orders : []).map((order) => (
+                <li key={order.sku} className="rounded-xl border border-color-outline/30 px-3 py-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-color-text-primary">
+                      {order.sku.toUpperCase()}
+                    </span>
+                    <span className="text-sm text-color-text-secondary">
+                      {order.qty} units
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-color-text-secondary">
+                    {order.quotePrice !== undefined && order.quotePrice !== null
+                      ? `Quote $${order.quotePrice.toFixed(2)}, ${order.deliveryDays}d`
+                      : "Awaiting quote"}
+                    {order.confidence !== undefined && order.confidence !== null
+                      ? ` · ${(order.confidence * 100).toFixed(1)}% confidence`
+                      : ""}
+                  </p>
+                </li>
+              ))}
+              {!telemetry.orders.length && (
+                <li className="text-xs text-color-text-secondary">
+                  No supplier moves in this tick.
+                </li>
+              )}
+            </ul>
+            {telemetry.status && (
+              <p className="mt-3 text-xs text-color-text-secondary">
+                Revenue ${telemetry.status.revenue.toFixed(2)} · Costs $
+                {telemetry.status.costs.toFixed(2)} · Latency {telemetry.status.latencyMs.toFixed(1)}ms
+              </p>
+            )}
+          </div>
+        </section>
+
         <ForkSlider value={forkValue} onChange={setForkValue} />
 
         <ThemeSwitch location="drawer" />

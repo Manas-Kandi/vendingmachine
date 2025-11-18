@@ -1,7 +1,7 @@
 import { createStore } from "./store";
 
 export type TelemetryMetric = {
-  id: "margin" | "temperature" | "rain" | "traffic";
+  id: "margin" | "temperature" | "rain" | "traffic" | "latency" | "uptime";
   label: string;
   value: number;
   unit: string;
@@ -19,6 +19,15 @@ export type TelemetryState = {
   marginSeries: number[];
   timeline: TelemetryPoint[];
   reasoning: string;
+  inventory: Array<{ sku: string; stock: number; msrp: number }>;
+  orders: Array<{
+    sku: string;
+    qty: number;
+    quotePrice: number;
+    deliveryDays: number;
+    confidence: number;
+  }>;
+  status: { revenue: number; costs: number; latencyMs: number; uptime: number } | null;
   offline: boolean;
   loading: boolean;
   error?: string;
@@ -26,15 +35,13 @@ export type TelemetryState = {
 };
 
 const initialState: TelemetryState = {
-  metrics: [
-    { id: "margin", label: "Margin", value: 0, unit: "%", delta: 0 },
-    { id: "temperature", label: "Temp", value: 0, unit: "°C", delta: 0 },
-    { id: "rain", label: "Rain", value: 0, unit: "%", delta: 0 },
-    { id: "traffic", label: "Traffic", value: 0, unit: "idx", delta: 0 },
-  ],
+  metrics: [],
   marginSeries: [],
   timeline: [],
   reasoning: "Calibrating supply chain equilibrium...",
+  inventory: [],
+  orders: [],
+  status: null,
   offline: false,
   loading: true,
   error: undefined,
@@ -44,33 +51,17 @@ const initialState: TelemetryState = {
 export const telemetryStore = createStore(initialState);
 
 type ApiTelemetry = {
-  metrics: Array<{
-    id: TelemetryMetric["id"];
-    value: number;
-    delta: number;
-  }>;
+  metrics: TelemetryMetric[];
   marginSeries: number[];
   timeline: TelemetryPoint[];
   reasoning: string;
   generatedAt: string;
+  inventory?: TelemetryState["inventory"];
+  orders?: TelemetryState["orders"];
+  status?: TelemetryState["status"];
 };
 
 const API_PATH = "/api/telemetry";
-
-const mergeMetrics = (
-  base: TelemetryMetric[],
-  incoming: ApiTelemetry["metrics"],
-) =>
-  base.map((metric) => {
-    const incomingMetric = incoming.find((item) => item.id === metric.id);
-    return incomingMetric
-      ? {
-          ...metric,
-          value: incomingMetric.value,
-          delta: incomingMetric.delta,
-        }
-      : metric;
-  });
 
 const fetchTelemetry = async () => {
   const response = await fetch(API_PATH, { cache: "no-store" });
@@ -88,10 +79,13 @@ const loadTelemetry = async () => {
     const payload = await fetchTelemetry();
     telemetryStore.update((current) => ({
       ...current,
-      metrics: mergeMetrics(current.metrics, payload.metrics),
+      metrics: payload.metrics.length ? payload.metrics : current.metrics,
       marginSeries: payload.marginSeries,
       timeline: payload.timeline,
       reasoning: payload.reasoning,
+      inventory: payload.inventory ?? current.inventory,
+      orders: payload.orders ?? current.orders,
+      status: payload.status ?? current.status,
       loading: false,
       error: undefined,
       offline: false,

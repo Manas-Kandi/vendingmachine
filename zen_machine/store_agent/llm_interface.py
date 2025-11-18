@@ -43,3 +43,7 @@ Provide your quote reasoning in JSON format:"""
             return decision
         except Exception:
             return {"reason": "Standard pricing applied", "confidence": 0.8}
+
+    async def generate_quote_reasoning(self, context: Dict) -> Dict:
+        """Public helper aligning with StoreAgent expectations."""
+        return await self.generate_decision(context)

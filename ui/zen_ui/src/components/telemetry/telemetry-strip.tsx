@@ -1,6 +1,8 @@
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import {
   CloudRain,
+  Gauge,
+  Timer,
   TrafficSign,
   Thermometer,
   TrendUp,
@@ -18,6 +20,8 @@ const iconMap: Record<TelemetryMetric["id"], typeof TrendUp> = {
   temperature: Thermometer,
   rain: CloudRain,
   traffic: TrafficSign,
+  latency: Timer,
+  uptime: Gauge,
 };
 
 const formatter = new Intl.NumberFormat(undefined, {
