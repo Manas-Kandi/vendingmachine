@@ -2,49 +2,40 @@
 
 :root {
   color-scheme: light dark;
-  --font-inter: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  --font-fira: "Fira Code", "SFMono-Regular", Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
 
-  --color-background: #f7f5f2;
-  --color-surface: #ffffff;
-  --color-primary: #5a7d64;
-  --color-primary-strong: #3c5a46;
-  --color-accent: #8a5a00;
-  --color-error: #c1403e;
-  --color-text-primary: #1f1f1f;
-  --color-text-secondary: #737373;
-  --color-glass: rgba(255, 255, 255, 0.08);
-  --color-outline: color-mix(in srgb, var(--color-primary) 60%, transparent);
+  /* Modern Zen Editorial Palette */
+  --color-sumi: #1a1a1a;
+  /* Soft Black */
+  --color-washi: #f2f0e9;
+  /* Warm Off-White */
+  --color-moss: #4a5d4e;
+  /* Muted Green */
+  --color-clay: #8c6b5d;
+  /* Muted Terracotta */
+  --color-stone: #2d2d2d;
+  /* Dark Grey */
+  --color-mist: #e6e6e6;
+  /* Light Grey */
+
+  --color-background: var(--color-sumi);
+  --color-surface: var(--color-stone);
+  --color-text-primary: var(--color-washi);
+  --color-text-secondary: #a0a0a0;
+  --color-accent: var(--color-moss);
 
   --space-unit: clamp(16px, 2vw, 32px);
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 32px;
-  --shadow-soft: 0 24px 80px rgba(33, 33, 33, 0.08);
-  --shadow-button: 0 12px 24px rgba(92, 127, 100, 0.2);
-
-  --drawer-width: clamp(320px, 28vw, 420px);
-  --machine-breathe-scale: 1.015;
-  --layout-max-width: 1440px;
-  --layout-padding-mobile: clamp(20px, 4vw, 32px);
-  --layout-padding-desktop: clamp(64px, 6vw, 120px);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
 }
 
-[data-theme="dark"] {
-  --color-background: #1a1a1a;
-  --color-surface: #2a2a2a;
-  --color-primary: #a8c6ad;
-  --color-primary-strong: #729479;
-  --color-accent: #ffcf70;
-  --color-error: #ff8a88;
-  --color-text-primary: #e8e8e8;
-  --color-text-secondary: #a2a2a2;
-  --color-glass: rgba(255, 255, 255, 0.04);
-  --color-outline: color-mix(in srgb, var(--color-primary) 45%, transparent);
-  --shadow-soft: 0 24px 80px rgba(12, 12, 12, 0.55);
-  --shadow-button: 0 12px 24px rgba(163, 193, 167, 0.18);
+[data-theme="light"] {
+  --color-background: var(--color-washi);
+  --color-surface: #e8e6df;
+  --color-text-primary: var(--color-sumi);
+  --color-text-secondary: #666666;
 }
 
 @theme inline {
@@ -77,7 +68,7 @@ body {
   min-height: 100dvh;
   background: var(--color-background);
   color: var(--color-text-primary);
-  font-family: var(--font-inter);
+  font-family: var(--font-sans);
   letter-spacing: -0.01em;
   margin: 0;
   text-rendering: optimizeLegibility;
@@ -133,10 +124,12 @@ button {
 }
 
 @keyframes calm-breathe {
+
   0%,
   100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(var(--machine-breathe-scale));
   }
@@ -155,6 +148,7 @@ button {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -165,15 +159,18 @@ button {
   .calming-breathe {
     animation: none !important;
   }
+
   .fade-in {
     animation: fade-in-reduced 220ms ease-out forwards !important;
   }
+
   .scroll-hint__icon {
     animation: none !important;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -188,16 +185,19 @@ button {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
 
 @keyframes scroll-pulse {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(6px);
   }
@@ -213,7 +213,7 @@ button {
   margin-inline: auto;
   padding-inline: var(--layout-padding-mobile);
 }
-  
+
 /* hero-gradient class intentionally left blank for optional future use */
 
 @media (min-width: 768px) {
@@ -231,27 +231,23 @@ button {
 @supports (padding: max(env(safe-area-inset-left), 1px)) {
   .layout-shell {
     padding-left: max(var(--layout-padding-mobile), env(safe-area-inset-left));
-    padding-right: max(
-      var(--layout-padding-mobile),
-      env(safe-area-inset-right)
-    );
+    padding-right: max(var(--layout-padding-mobile),
+        env(safe-area-inset-right));
   }
+
   @media (min-width: 768px) {
     .layout-shell {
       padding-left: max(clamp(32px, 6vw, 80px), env(safe-area-inset-left));
       padding-right: max(clamp(32px, 6vw, 80px), env(safe-area-inset-right));
     }
   }
+
   @media (min-width: 1200px) {
     .layout-shell {
-      padding-left: max(
-        var(--layout-padding-desktop),
-        env(safe-area-inset-left)
-      );
-      padding-right: max(
-        var(--layout-padding-desktop),
-        env(safe-area-inset-right)
-      );
+      padding-left: max(var(--layout-padding-desktop),
+          env(safe-area-inset-left));
+      padding-right: max(var(--layout-padding-desktop),
+          env(safe-area-inset-right));
     }
   }
 }
@@ -278,7 +274,52 @@ button {
   from {
     background-position: 0% 0%;
   }
+
   to {
     background-position: 0% 100%;
   }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+@keyframes rain {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 20px 100vh;
+  }
+}
+
+.animate-rain {
+  animation: rain 1s linear infinite;
 }

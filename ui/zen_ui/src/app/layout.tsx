@@ -1,22 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Fira_Code } from "next/font/google";
+import { Playfair_Display, Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-context";
 import { ThemeScript } from "@/components/theme/theme-script";
 import "./globals.css";
 
-const inter = Inter({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-serif",
   display: "swap",
-  weight: ["300", "400", "500"],
+  weight: ["400", "500", "600", "700"],
   preload: true,
 });
 
-const firaCode = Fira_Code({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-fira",
+  variable: "--font-sans",
   display: "swap",
-  weight: ["400", "500"],
+  weight: ["300", "400", "500", "600"],
   preload: true,
 });
 
@@ -54,7 +54,7 @@ export default function RootLayout({
       <head>
         <ThemeScript />
       </head>
-      <body className={`${inter.variable} ${firaCode.variable} antialiased`}>
+      <body className={`${playfair.variable} ${spaceGrotesk.variable} antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

@@ -11,7 +11,11 @@ zen_machine.egg-info/requires.txt
 zen_machine.egg-info/top_level.txt
 zen_machine/adversary_module/__init__.py
 zen_machine/adversary_module/adversary.py
+zen_machine/api/__init__.py
+zen_machine/api/live_engine.py
+zen_machine/api/main.py
 zen_machine/core/__init__.py
+zen_machine/core/llm_interface.py
 zen_machine/core/models.py
 zen_machine/core/simulation.py
 zen_machine/infrastructure/__init__.py

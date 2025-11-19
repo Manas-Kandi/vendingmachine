@@ -92,6 +92,25 @@ class OptimizationEngine:
         
         objective = cp.Maximize(cp.sum(revenues - purchase_costs))
         
+        # Incorporate LLM suggestions as soft constraints (regularization)
+        if llm_suggestion and "prices" in llm_suggestion:
+            suggested_prices = []
+            valid_indices = []
+            for i, sku in enumerate(sku_list):
+                if sku.id in llm_suggestion["prices"]:
+                    suggested_prices.append(llm_suggestion["prices"][sku.id])
+                    valid_indices.append(i)
+            
+            if valid_indices:
+                # Add penalty for deviating from suggested prices
+                # lambda_reg determines how much we trust the LLM
+                lambda_reg = 5.0 
+                penalty = 0
+                for idx, suggested_price in zip(valid_indices, suggested_prices):
+                    penalty += cp.square(prices[idx] - suggested_price)
+                
+                objective = cp.Maximize(cp.sum(revenues - purchase_costs) - lambda_reg * penalty)
+        
         # Constraints
         constraints = []
         

@@ -47,25 +47,27 @@ class UnifiedLLMInterface:
         temperature: float = 0.15,
         max_tokens: int = 600,
     ) -> None:
-        api_key = (
+        self.api_key = (
             os.getenv("NVIDIA_API_KEY")
             or os.getenv("ZEN_MACHINE_LLM_API_KEY")
             or os.getenv("OPENAI_API_KEY")
         )
-        if not api_key:
-            raise RuntimeError(
-                "Missing API key for LLM. Set NVIDIA_API_KEY or ZEN_MACHINE_LLM_API_KEY."
+        
+        self.use_mock = False
+        if not self.api_key:
+            logger.warning("No LLM API key found. Using mock responses.")
+            self.use_mock = True
+            self.client = None
+        else:
+            base_url = os.getenv(
+                "ZEN_MACHINE_LLM_BASE_URL",
+                "https://integrate.api.nvidia.com/v1",
+            ).rstrip("/")
+
+            self.client = AsyncOpenAI(
+                api_key=self.api_key,
+                base_url=base_url,
             )
-
-        base_url = os.getenv(
-            "ZEN_MACHINE_LLM_BASE_URL",
-            "https://integrate.api.nvidia.com/v1",
-        ).rstrip("/")
-
-        self.client = AsyncOpenAI(
-            api_key=api_key,
-            base_url=base_url,
-        )
 
         self.system_prompt = system_prompt.strip()
         self.model = model or os.getenv(
@@ -112,6 +114,17 @@ class UnifiedLLMInterface:
 
     async def _call_llm(self, prompt: str) -> str:
         """Invoke the underlying LLM endpoint and return the raw text."""
+        if self.use_mock:
+            # Return a generic mock response that should be valid JSON
+            return json.dumps({
+                "prices": {},
+                "order": {},
+                "expedite": False,
+                "thought": "Mock reasoning: operating in offline mode.",
+                "reason": "Mock reasoning: operating in offline mode.",
+                "confidence": 1.0
+            })
+
         try:
             response = await self.client.chat.completions.create(
                 model=self.model,
