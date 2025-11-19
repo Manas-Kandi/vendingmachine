@@ -1,64 +1,48 @@
 const API_BASE_URL = 'http://localhost:8001';
 
-export interface TelemetrySnapshot {
-    metrics: Metric[];
-    marginSeries: number[];
-    timeline: TimelineEvent[];
-    reasoning: string;
-    inventory: InventoryItem[];
-    orders: OrderSummary[];
-    status: SystemStatus;
-    generatedAt: string;
+export interface MarketState {
+    last_prices: Record<string, number>;
+    history_len: number;
+    books: Record<string, {
+        bids: number;
+        asks: number;
+        best_bid: number | null;
+        best_ask: number | null;
+    }>;
 }
 
-export interface Metric {
+export interface AgentView {
     id: string;
-    label: string;
-    value: number;
-    delta: number;
-    unit: string;
+    persona: string;
+    cash: number;
+    assets: Record<string, number>;
+    total_value: number;
 }
 
-export interface TimelineEvent {
-    timestamp: string;
-    margin: number;
-    adversaryPulse: number;
-}
-
-export interface InventoryItem {
-    sku: string;
-    stock: number;
-    msrp: number;
-}
-
-export interface OrderSummary {
-    sku: string;
+export interface Trade {
+    id: string;
+    asset: string;
+    price: number;
     qty: number;
-    quotePrice: number;
-    deliveryDays: number;
-    confidence: number;
+    buyer: string;
+    seller: string;
+    time: string;
 }
 
-export interface SystemStatus {
-    revenue: number;
-    costs: number;
-    latencyMs: number;
-    uptime: number;
+export interface EconomySnapshot {
+    generated_at: string;
+    market_state: MarketState;
+    agents: AgentView[];
+    trades: Trade[];
+    status: string;
 }
 
-export async function fetchTelemetry(): Promise<TelemetrySnapshot> {
-    try {
-        const response = await fetch(`${API_BASE_URL}/telemetry`, {
-            cache: 'no-store',
-        });
-
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('Failed to fetch telemetry:', error);
-        throw error;
+export async function fetchTelemetry(): Promise<EconomySnapshot> {
+    const response = await fetch(`${API_BASE_URL}/telemetry`, {
+        cache: 'no-store',
+    });
+    if (!response.ok) {
+        throw new Error('Failed to fetch telemetry');
     }
+    return response.json();
 }

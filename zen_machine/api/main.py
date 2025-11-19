@@ -1,18 +1,13 @@
-"""FastAPI application providing live telemetry for the UI."""
+"""FastAPI entry point for the Zen Machine AI Economy."""
 
-from __future__ import annotations
-
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .live_engine import LiveEngine
 
-app = FastAPI(
-    title="Zen Machine API",
-    version="0.2.0",
-    description="Live telemetry and decision feed for the Zen Machine frontend.",
-)
+app = FastAPI(title="Zen Machine Economy")
 
+# Allow CORS for local UI development
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,28 +18,13 @@ app.add_middleware(
 
 engine = LiveEngine()
 
-
 @app.get("/health")
-async def health() -> dict:
-    """Simple health probe."""
-    return {"status": "ok"}
-
+async def health_check():
+    """Return system health status."""
+    return {"status": "ok", "mode": "AI Economy"}
 
 @app.get("/telemetry")
-async def telemetry() -> dict:
-    """Return the latest telemetry snapshot."""
-    try:
-        snapshot = await engine.snapshot()
-    except Exception as exc:  # pragma: no cover - defensive
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
-
-    return {
-        "metrics": snapshot.metrics,
-        "marginSeries": snapshot.margin_series,
-        "timeline": snapshot.timeline,
-        "reasoning": snapshot.reasoning,
-        "generatedAt": snapshot.generated_at.isoformat(),
-        "inventory": snapshot.inventory,
-        "orders": snapshot.orders,
-        "status": snapshot.status,
-    }
+async def get_telemetry():
+    """Get the current state of the AI economy."""
+    snapshot = await engine.snapshot()
+    return snapshot
